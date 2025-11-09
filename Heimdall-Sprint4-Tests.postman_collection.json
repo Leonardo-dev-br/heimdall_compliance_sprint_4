@@ -1,0 +1,192 @@
+{
+  "info": {
+    "name": "Heimdall - Sprint4 Tests",
+    "_postman_id": "heimdall-sprint4-collection-001",
+    "description": "Collection with 4 automated tests for the HEIMDALL API (Sprint 4) - POST motorcycle, GET motorcycle, PUT occupy vacancy, POST history.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - POST Create Motorcycle",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_moto\": \"{{motoId}}\",\n  \"placa\": \"ABC1D23\",\n  \"tipo\": \"El\\u00e9trica\",\n  \"id_zona\": 3\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/motorcycles",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "motorcycles"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test('Body has success message', function () {",
+              "    var json = pm.response.json();",
+              "    pm.expect(json.mensagem || json.message || json).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Try to delete existing motorcycle before creating (idempotency for automation)",
+              "pm.sendRequest({",
+              "  url: pm.environment.get('baseUrl') + '/motorcycles/' + pm.environment.get('motoId'),",
+              "  method: 'DELETE'",
+              "}, function (err, res) {",
+              "  // ignore errors - just try to clean before create",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - GET Motorcycle by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/motorcycles/{{motoId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "motorcycles",
+            "{{motoId}}"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response contains correct id', function () {",
+              "    var json = pm.response.json();",
+              "    var actual = json.id_moto || json.id || json.idMotorcycle || json.idMotor;",
+              "    pm.expect(Number(actual)).to.eql(Number(pm.environment.get('motoId')));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - PUT Occupy Vacancy",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_moto\": \"{{motoId}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/vagas/{{vagaId}}/ocupar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "vagas",
+            "{{vagaId}}",
+            "ocupar"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Message indicates occupation', function () {",
+              "    var json = pm.response.json();",
+              "    pm.expect(JSON.stringify(json)).to.include('ocup');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - POST Register History",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_moto\": \"{{motoId}}\",\n  \"atividade\": \"Teste automatizado - Estacionamento\",\n  \"data_atividade\": \"2025-11-09\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/historico",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "historico"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test('History registered', function () {",
+              "    var json = pm.response.json();",
+              "    pm.expect(json.mensagem || json.message).to.exist;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}

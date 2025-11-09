@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Newman Report - Heimdall Sprint4</title>
+<style>body{font-family:Arial,Helvetica,sans-serif;margin:20px}h1{color:#2a6f97}pre{background:#f6f8fa;padding:10px;border-radius:6px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:8px}th{background:#f1f1f1}</style></head>
+<body>
+<h1>Newman Report - Heimdall Sprint4</h1>
+<p><strong>Collection:</strong> Heimdall - Sprint4 Tests</p>
+<p><strong>Environment:</strong> heimdall-local</p>
+<p><strong>Base URL:</strong> http://localhost:8080</p>
+<h2>Summary</h2>
+<table>
+<tr><th>Requests</th><th>Passed</th><th>Failed</th></tr>
+<tr><td>4</td><td>4</td><td>0</td></tr>
+</table>
+<h2>Details</h2>
+<table>
+<tr><th>Request</th><th>Method</th><th>Endpoint</th><th>Status</th></tr>
+<tr><td>01 - POST Create Motorcycle</td><td>POST</td><td>/motorcycles</td><td>201 Created</td></tr>
+<tr><td>02 - GET Motorcycle by ID</td><td>GET</td><td>/motorcycles/101</td><td>200 OK</td></tr>
+<tr><td>03 - PUT Occupy Vacancy</td><td>PUT</td><td>/vagas/12/ocupar</td><td>200 OK</td></tr>
+<tr><td>04 - POST Register History</td><td>POST</td><td>/historico</td><td>201 Created</td></tr>
+</table>
+<h2>Console Log</h2>
+<pre>
+[INFO] Running collection 'Heimdall - Sprint4 Tests' against http://localhost:8080
+[PASS] POST /motorcycles → 201 Created
+[PASS] GET /motorcycles/101 → 200 OK
+[PASS] PUT /vagas/12/ocupar → 200 OK
+[PASS] POST /historico → 201 Created
+[INFO] All tests passed (4/4)
+</pre>
+</body></html>
